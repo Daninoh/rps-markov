@@ -3,6 +3,7 @@ class PlayerMarkovApp {
     this.container = document.getElementById(containerId);
     this.name = playerName;
     this.history = [];
+    this.limit = 40;
     this.renderBase();
     this.update();
   }
@@ -53,9 +54,13 @@ class PlayerMarkovApp {
   }
 
   add(move) {
+    // LIMIT CHECK: Stop adding if limit is reached
+    if (this.history.length >= this.limit) {
+      return;
+    }
     this.history.push(move);
     this.update();
-    this.predict(); // Update prediction when move is added
+    this.predict();
   }
 
   undo() {
@@ -67,36 +72,68 @@ class PlayerMarkovApp {
   predict() {
     const predDisplay = document.getElementById(`${this.name}-pred`);
     const hintDisplay = document.getElementById(`${this.name}-hint`);
+    const allInputs = this.container.querySelectorAll(".markov-section input");
 
-    // 1. Grab all 9 number inputs within this player's specific container
-    const allInputs = this.container.querySelectorAll('.markov-section input[type="number"], .markov-section input[type="text"]');
+    // 1. Calculate the "Actual" Correct Data from History
+    // We need to know the REAL number of transitions for validation
+    let actualTransitions = {
+      "🪨": { "🪨": 0, "📜": 0, "✂️": 0 },
+      "📜": { "🪨": 0, "📜": 0, "✂️": 0 },
+      "✂️": { "🪨": 0, "📜": 0, "✂️": 0 },
+    };
 
-    // 2. Strict Check: Are all 9 filled with a character?
+    for (let i = 0; i < this.history.length - 1; i++) {
+      const from = this.history[i];
+      const to = this.history[i + 1];
+      actualTransitions[from][to]++;
+    }
+
+    // 2. Validate Inputs
+    let allCorrect = true;
     let filledCount = 0;
+
     allInputs.forEach((input) => {
-      // Check if the trimmed value is not an empty string
-      if (input.value.trim() !== "") {
+      const fromSymbol = input.getAttribute("data-from");
+      const toSymbol = input.getAttribute("data-to");
+      const studentValue = input.value.trim();
+
+      if (studentValue === "") {
+        allCorrect = false;
+        input.style.backgroundColor = "white"; // Reset color if empty
+      } else {
         filledCount++;
+        const correctValue = actualTransitions[fromSymbol][toSymbol];
+
+        if (parseInt(studentValue) === correctValue) {
+          input.style.backgroundColor = "#dcfce7"; // Light green for correct
+          input.style.borderColor = "#22c55e";
+        } else {
+          input.style.backgroundColor = "#fee2e2"; // Light red for incorrect
+          input.style.borderColor = "#ef4444";
+          allCorrect = false;
+        }
       }
     });
 
-    // 3. Hide logic: If fewer than 9 are filled, or no history exists, FORCE HIDE
-    if (filledCount < 9 || this.history.length === 0) {
+    // 3. Reveal/Hide Logic
+    // Only reveal if history exists AND all 9 are filled AND all 9 are correct
+    if (!allCorrect || filledCount < 9 || this.history.length === 0) {
       predDisplay.innerHTML = "?";
       if (hintDisplay) {
         hintDisplay.style.display = "block";
-        hintDisplay.textContent = `Fill all 9 numerators (${filledCount}/9)`;
+        hintDisplay.innerHTML =
+          this.history.length === 0
+            ? "Add data to begin"
+            : `Validation: ${allCorrect ? "All correct!" : "Check your counts..."} (${filledCount}/9)`;
       }
       return;
     }
 
-    // 4. Reveal Logic (Only runs if we pass the 9/9 check)
+    // 4. If everything is correct, show the prediction
     if (hintDisplay) hintDisplay.style.display = "none";
 
     const lastMove = this.history[this.history.length - 1];
     const relevantInputs = this.container.querySelectorAll(`input[data-from="${lastMove}"]`);
-
-    // Get the current denominator from the UI
     const denomEl = relevantInputs[0].parentElement.querySelector(".denom");
     const denominator = parseInt(denomEl.textContent) || 0;
 
@@ -113,7 +150,6 @@ class PlayerMarkovApp {
       }
     });
 
-    // 5. Calculate Probability
     let probResult = "";
     if (denominator > 0 && maxVal >= 0) {
       const percentage = Math.round((maxVal / denominator) * 100);
@@ -129,11 +165,20 @@ class PlayerMarkovApp {
   update() {
     const grid = document.getElementById(`${this.name}-grid`);
     grid.innerHTML = "";
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < this.limit; i++) {
       const box = document.createElement("div");
       box.className = "box";
       box.textContent = this.history[i] || "";
       grid.appendChild(box);
+    }
+
+    // Update the UI status counter
+    const status = document.getElementById(`${this.name}-status`);
+    if (status) {
+      status.textContent = `Data: ${this.history.length}/${this.limit}`;
+      // Optional: change color when full
+      status.style.color = this.history.length === this.limit ? "#059669" : "#666";
+      status.style.fontWeight = this.history.length === this.limit ? "bold" : "normal";
     }
 
     let counts = { "🪨": 0, "📜": 0, "✂️": 0 };
