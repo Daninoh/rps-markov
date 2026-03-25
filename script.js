@@ -124,7 +124,7 @@ class PlayerMarkovApp {
         hintDisplay.innerHTML =
           this.history.length === 0
             ? "Add data to begin"
-            : `Validation: ${allCorrect ? "All correct!" : "Check your counts..."} (${filledCount}/9)`;
+            : `${allCorrect ? "All correct!" : "Check your counts..."} (${filledCount}/9)`;
       }
       return;
     }
