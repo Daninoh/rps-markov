@@ -1,0 +1,202 @@
+body {
+  font-family: sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* gap: 20px; */
+}
+
+header {
+  font-size: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+}
+.container {
+  padding: 20px;
+}
+
+.player-container {
+  display: flex;
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+/* Controls Area */
+.controls {
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-right: 16px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+button {
+  font-size: 30px;
+  padding: 12px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+button:hover {
+  background: #f0f0f0;
+}
+
+.undo-btn {
+  font-size: 14px;
+  background: #ffeded;
+  color: #cc0000;
+}
+
+/* Dataset Area */
+.dataset-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.box {
+  height: 60px;
+  /* border: 2px solid #eee; */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  /* background: #fafafa; */
+
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Markov Area */
+.markov-section {
+  position: relative;
+  width: 500px;
+  height: 350px;
+  flex-shrink: 0;
+}
+
+.markov-bg {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Icons & Inputs Positioning */
+.node {
+  position: absolute;
+  font-size: 35px;
+  z-index: 2;
+  width: 50px;
+  text-align: center;
+}
+
+.paper-node {
+  top: 31%;
+  left: 45%;
+}
+
+.rock-node {
+  top: 70%;
+  left: 27%;
+}
+
+.scis-node {
+  top: 70%;
+  left: 63.5%;
+}
+
+.frac {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 2px;
+}
+
+.frac input {
+  width: 25px;
+  text-align: center;
+  border: 1px solid #bbb;
+  font-size: 14px;
+}
+
+.denom {
+  border-top: 1px solid black;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+/* Coordinate Adjustments */
+.f-pp {
+  top: 0%;
+  left: 46.5%;
+}
+
+.f-rr {
+  top: 70%;
+  left: 5%;
+}
+
+.f-ss {
+  top: 70%;
+  left: 88%;
+}
+
+.f-pr {
+  top: 44%;
+  left: 24%;
+}
+
+.f-ps {
+  top: 44%;
+  left: 69%;
+}
+
+.f-rp {
+  top: 48%;
+  left: 38%;
+}
+
+.f-sp {
+  top: 48%;
+  left: 55%;
+}
+
+.f-rs {
+  top: 68%;
+  left: 46%;
+}
+
+.f-sr {
+  top: 88%;
+  left: 46%;
+}
