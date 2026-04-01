@@ -33,7 +33,7 @@ header {
 
 /* Controls Area */
 .controls {
-  width: 180px;
+  min-width: 180px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -75,21 +75,22 @@ button:hover {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 16px;
+  /* This creates a fluid layout: it fits as many as possible (min 45px wide) */
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
   margin-top: 10px;
 }
 
 .box {
-  height: 60px;
-  /* border: 2px solid #eee; */
+  /* Use aspect-ratio to keep them square regardless of width */
+  aspect-ratio: 1 / 0.95;
+  height: auto; /* Remove the fixed 60px height */
+
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  /* background: #fafafa; */
-
+  font-size: 30px; /* Slightly smaller for mobile screens */
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 

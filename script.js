@@ -20,7 +20,7 @@ class PlayerMarkovApp {
           </div>
           <button class="undo-btn" onclick="${pName}.undo()">Undo</button>
           
-         <div style="margin-top:75px; padding:10px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0; font-size:0.85em;">
+         <div style="padding:10px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0; font-size:0.85em;">
             <strong>Next likely move:</strong>
             <div id="${this.name}-pred" style="font-size:2em; text-align:center; margin-top:5px; min-height: 1.2em;">?</div>
             <div id="${this.name}-hint" style="font-size:0.8em; color:#666; text-align:center;">Fill all 9 numerators to reveal</div>
